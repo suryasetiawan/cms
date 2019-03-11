@@ -26,50 +26,52 @@
             </div>
         </div>
     </nav>
-
     <div class="container">
-        <div id="chart_div" ></div>
-        
+        <div id="chart_div" style="width: 1080px; height: 700px;"></div>
     </div>
-
     <script type="text/javascript">
-        let apiUrl = `http://localhost:3001/api/data/`;
+        let apiUrl = `http://localhost:3001/api/datadate/`;
         $(document).ready(function () {
-            google.charts.load("current", { packages: ["corechart", "bar"] });
-            google.charts.setOnLoadCallback(drawChart);
+            google.charts.load('current', { packages: ['corechart', 'line'] });
+            google.charts.setOnLoadCallback(drawBasic);
         })
 
-        function drawChart() {
+        function drawBasic() {
             $.ajax({
                 url: apiUrl,
                 method: 'GET'
             }).done(data => {
                 let listdata = [];
-                listdata.push(['letter', 'frequency']);
+                listdata.push(['Year', 'Data']);
                 let itemchart;
+                let d;
                 data.forEach(item => {
                     itemchart = [];
-                    itemchart.push(item.letter);
+                    d = new Date(item.letter)
+                    itemchart.push(`${d.getFullYear()}`);
                     itemchart.push(item.frequency);
                     listdata.push(itemchart);
                 })
                 var data = google.visualization.arrayToDataTable(listdata);
+                data.addColumn('number', 'X');
+                data.addColumn('number', 'Y');
 
                 var options = {
-                    title: "BAR CHART",
-                    width: 1080,
-                    height: 760,
-                    bar: { groupWidth: "90%" },
-                    legend: { position: "none" },
-            
-                };
-                var chart = new google.visualization.ColumnChart(document.getElementById("chart_div"));
-                chart.draw(data, options);
-            })
+                hAxis: {
+                    title: 'YEAR'
+                },
+                vAxis: {
+                    title: 'Frequency'
+                }
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+
+            chart.draw(data, options);
+            })            
         }
 
     </script>
-
 </body>
 
 </html>

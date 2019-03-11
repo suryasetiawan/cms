@@ -43,4 +43,20 @@ router.get('/pie', function(req, res, next) {
   res.render('pie');
 });
 
+router.get('/datadate', function(req, res, next) {
+  res.render('datadate');
+});
+
+router.get('/line', function(req, res, next) {
+  res.render('line');
+});
+
+router.get('/maps', function(req, res, next) {
+  res.render('maps');
+});
+
+router.get('/mapsview', function(req, res, next) {
+  res.render('mapsview');
+});
+
 module.exports = router;
